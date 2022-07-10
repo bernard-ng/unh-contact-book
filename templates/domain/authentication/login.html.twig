@@ -1,0 +1,25 @@
+{% extends 'domain/authentication/layout/base.html.twig' %}
+{% block title 'Connexion' %}
+
+{% block body %}
+    <div class="nk-block-head">
+        <div class="nk-block-head-content">
+            <h5 class="nk-block-title fw-bolder">Connexion - Gestion de contacts</h5>
+            <div class="nk-block-des"><p>Bon retour parmi nous, connectez-vous pour continuer !</p></div>
+        </div>
+    </div>
+    {{ form_start(form) }}
+    {{ form_row(form.email) }}
+    <div class="form-group">
+        <div class="form-label-group">
+            {{ form_label(form.password) }}
+        </div>
+        {{ form_widget(form.password)}}
+    </div>
+    <button class="btn btn-lg btn-primary btn-block">Se connecter</button>
+    {{ form_end(form) }}
+    <div class="form-note-s2 pt-4">
+        Vous n'avez pas un compte ?
+        <a href="{{ path('app_register') }}">inscrivez-vous</a>
+    </div>
+{% endblock %}

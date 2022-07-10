@@ -1,0 +1,6 @@
+controllers:
+    resource: ../src/Controller/
+    type: attribute
+    schemes:
+        - HTTP
+        - HTTPS

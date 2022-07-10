@@ -1,0 +1,20 @@
+{
+  "controllers": {
+    "@symfony/ux-turbo": {
+      "turbo-core": {
+        "enabled": true,
+        "fetch": "eager"
+      }
+    },
+    "@symfony/ux-dropzone": {
+      "dropzone": {
+        "enabled": true,
+        "fetch": "lazy",
+        "autoimport": {
+          "@symfony/ux-dropzone/src/style.css": true
+        }
+      }
+    }
+  },
+  "entrypoints": []
+}

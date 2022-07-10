@@ -1,0 +1,10 @@
+twig:
+    default_path: '%kernel.project_dir%/templates'
+    date:
+        format: d F Y
+        interval_format: '%%d days'
+    form_themes: ['shared/layout/form_theme.html.twig']
+
+when@test:
+    twig:
+        strict_variables: true

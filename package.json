@@ -1,0 +1,33 @@
+{
+    "devDependencies": {
+        "@hotwired/stimulus": "^3.0.0",
+        "@hotwired/turbo": "^7.0.1",
+        "@symfony/stimulus-bridge": "^3.2.0",
+        "@symfony/ux-dropzone": "file:vendor/symfony/ux-dropzone/Resources/assets",
+        "@symfony/ux-turbo": "file:vendor/symfony/ux-turbo/Resources/assets",
+        "@symfony/webpack-encore": "^3.0.0",
+        "core-js": "^3.23.0",
+        "regenerator-runtime": "^0.13.9",
+        "sass": "^1.53.0",
+        "sass-loader": "^13.0.0",
+        "webpack-notifier": "^1.15.0"
+    },
+    "license": "UNLICENSED",
+    "private": true,
+    "scripts": {
+        "dev-server": "encore dev-server",
+        "dev": "encore dev",
+        "watch": "encore dev --watch",
+        "build": "encore production --progress"
+    },
+    "dependencies": {
+        "axios": "^0.27.2",
+        "bootstrap": "^4.6.1",
+        "flatpickr": "^4.6.13",
+        "htm": "^3.1.1",
+        "popper.js": "^1.16.1",
+        "postcss": "^8.4.14",
+        "sweetalert2": "^11.4.20",
+        "tom-select": "^2.1.0"
+    }
+}
