@@ -1,0 +1,32 @@
+{
+  "dir": "ltr",
+  "lang": "fr-Fr",
+  "short_name": "Contacts",
+  "name": "Contacts : application de gestion de contacts",
+  "icons": [
+    {
+      "src": "/images/icons/maskable_icon.png",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/icons/maskable_icon_x128.png",
+      "type": "image/png",
+      "sizes": "128x128",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/icons/maskable_icon_x192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/?source=pwa",
+  "background_color": "#29A4FA",
+  "display": "standalone",
+  "orientation": "portrait",
+  "scope": "/",
+  "theme_color": "#fff",
+  "description": "Contacts : application de gestion de contacts"
+}

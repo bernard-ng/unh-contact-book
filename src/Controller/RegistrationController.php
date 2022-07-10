@@ -8,14 +8,13 @@ use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Security\LoginFormAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 
-class RegistrationController extends AbstractController
+final class RegistrationController extends AbstractController
 {
     #[Route('/register', name: 'app_register')]
     public function register(
@@ -30,10 +29,12 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user->setPassword($userPasswordHasher->hashPassword(
-                user: $user,
-                plainPassword: strval($form->get('plainPassword')->getData())
-            ));
+            $user
+                ->setPassword($userPasswordHasher->hashPassword(
+                    user: $user,
+                    plainPassword: strval($form->get('plainPassword')->getData())
+                ))
+                ->setRoles(['ROLE_USER']);
 
             $entityManager->persist($user);
             $entityManager->flush();
@@ -44,8 +45,12 @@ class RegistrationController extends AbstractController
             return $response;
         }
 
-        return $this->render('domain/authentication/register.html.twig', [
-            'form' => $form->createView(),
-        ]);
+        return $this->render(
+            view: 'domain/authentication/register.html.twig',
+            parameters: [
+                'form' => $form->createView(),
+            ],
+            response: $this->getResponseBasedOnFormValidationStatus($form)
+        );
     }
 }

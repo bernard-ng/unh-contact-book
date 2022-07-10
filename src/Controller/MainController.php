@@ -13,6 +13,6 @@ final class MainController extends AbstractController
     #[Route('/', name: 'app_index')]
     public function index(): Response
     {
-        return new Response('');
+        return $this->render('domain/contact/index.html.twig');
     }
 }

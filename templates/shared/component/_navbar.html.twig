@@ -16,7 +16,6 @@
             <div class="nk-header-tools">
                 <ul class="nk-quick-nav">
                     {% block navbar_tool_list %}{% endblock %}
-                    {% include 'shared/component/_notification.html.twig' %}
                     {% if app.user %}
                         <li class="dropdown user-dropdown">
                             <a href="#" class="dropdown-toggle mr-n1" data-toggle="dropdown" aria-expanded="false">
@@ -24,7 +23,7 @@
                                     <div class="user-avatar sm">{{ 'user-alt' | icon }}</div>
                                     <div class="user-info d-none d-xl-block">
                                         <div class="user-status user-status-verified">{{ app.user.roles | last | trans([], 'messages') }}</div>
-                                        <div class="user-name dropdown-indicator">{{ app.user.username }}</div>
+                                        <div class="user-name dropdown-indicator">{{ app.user.email }}</div>
                                     </div>
                                 </div>
                             </a>
@@ -33,7 +32,6 @@
                                     <div class="user-card">
                                         <div class="user-avatar"><span>{{ 'user-alt' | icon }}</span></div>
                                         <div class="user-info">
-                                            <span class="lead-text">{{ app.user.username }}</span>
                                             <span class="sub-text">{{ app.user.email }}</span>
                                         </div>
                                     </div>
@@ -41,7 +39,7 @@
                                 <div class="dropdown-inner">
                                     <ul class="link-list">
                                         <li>
-                                            <a href="{{ path('authentication_setting_security') }}" title="Paramètres">
+                                            <a href="#" title="Paramètres">
                                                 {{ 'setting' | icon }}
                                                 <span>Paramètres</span>
                                             </a>

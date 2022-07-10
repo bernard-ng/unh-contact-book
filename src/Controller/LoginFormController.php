@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class LoginFormController extends AbstractController
+final class LoginFormController extends AbstractController
 {
     public function __construct(
         private readonly TranslatorInterface $translator
@@ -21,7 +21,7 @@ class LoginFormController extends AbstractController
     #[Route(path: '/login', name: 'app_login')]
     public function login(AuthenticationUtils $utils): Response
     {
-        if ($this->getUser()) {
+        if ($this->getUser() !== null) {
             $this->redirectToRoute('app_index');
         }
 
@@ -38,10 +38,10 @@ class LoginFormController extends AbstractController
 
         $form = $this->createForm(LoginFromType::class, $command);
 
-        return $this->renderForm(
+        return $this->render(
             view: 'domain/authentication/login.html.twig',
             parameters: [
-                'form' => $form,
+                'form' => $form->createView(),
             ],
             response: $this->getResponseBasedOnFormValidationStatus($form)
         );
