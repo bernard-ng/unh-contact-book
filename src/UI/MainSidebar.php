@@ -8,6 +8,7 @@ use App\Twig\Sidebar\AbstractSidebar;
 use App\Twig\Sidebar\SidebarBuilderInterface;
 use App\Twig\Sidebar\SidebarCollection;
 use App\Twig\Sidebar\Type\SidebarHeader;
+use App\Twig\Sidebar\Type\SidebarLink;
 
 final class MainSidebar extends AbstractSidebar
 {
@@ -15,6 +16,9 @@ final class MainSidebar extends AbstractSidebar
     {
         return $builder
             ->add(new SidebarHeader('Contacts'))
+            ->add(new SidebarLink('app_index', 'Contacts', 'call'))
+            ->add(new SidebarLink('app_login', 'Favorites', 'star'))
+            ->add(new SidebarLink('app_register', 'Groupes', 'users'))
 
             ->setTranslationDomain('messages')
             ->create();

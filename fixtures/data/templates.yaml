@@ -3,7 +3,6 @@ App\Entity\User:
     email: user_<current()>\@user.com
     password: \$2y\$13\$PzaAzoYYBl1VyuAU9M/3GuFQaOgO2vyHct1iN0b4vULoIXtcBICuu # 000000
     roles: [ 'ROLE_USER' ]
-    isVerified: 1
 
 App\Entity\Contact:
   contact (template):
@@ -22,11 +21,7 @@ App\Entity\Contact:
     created_at: <dateTimeThisYear()>
     updated_at: ~
     social_networks: []
-
-App\Entity\Favorite:
-  favorite (template):
-    created_at: <dateTimeThisYear()>
-    updated_at: ~
+    is_favorite: 0
 
 App\Entity\Group:
   group (template):
