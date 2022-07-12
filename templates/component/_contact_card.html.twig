@@ -6,7 +6,7 @@
             {% endif %}
             <div class="user-card user-card-s2">
                 <div class="user-avatar lg bg-primary">
-                    <img src="https://fakeface.rest/face/view/{{ contact.id }}?gender={{ contact.formattedGender }}" alt="avatar du contact">
+                    <img src="{{ contact.defaultAvatar }}" alt="avatar du contact">
                 </div>
                 <div class="user-info">
                     <h6>{{ contact.name }}</h6>

@@ -41,15 +41,15 @@ final class ContactController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
 
-        if ($contact->getOwner() === $user) {
-            return $this->render(
-                view: 'domain/contact/show.html.twig',
-                parameters: [
-                    'contact' => $contact
-                ]
-            );
+        if ($contact->getOwner() !== $user) {
+            throw $this->createAccessDeniedException();
         }
 
-        throw $this->createAccessDeniedException();
+        return $this->render(
+            view: 'domain/contact/show.html.twig',
+            parameters: [
+                'contact' => $contact
+            ]
+        );
     }
 }

@@ -284,4 +284,9 @@ class Contact
             default => 'male'
         };
     }
+
+    public function getDefaultAvatar(): string
+    {
+        return "https://fakeface.rest/face/view/{$this->id}?gender={$this->getFormattedGender()}";
+    }
 }
