@@ -17,7 +17,7 @@ final class MainSidebar extends AbstractSidebar
         return $builder
             ->add(new SidebarHeader('Contacts'))
             ->add(new SidebarLink('app_index', 'Contacts', 'call'))
-            ->add(new SidebarLink('app_login', 'Favorites', 'star'))
+            ->add(new SidebarLink('app_contact_favorite', 'Favoris', 'star'))
             ->add(new SidebarLink('app_register', 'Groupes', 'users'))
 
             ->setTranslationDomain('messages')

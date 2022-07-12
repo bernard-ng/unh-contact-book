@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\Contact;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -39,5 +40,19 @@ class ContactRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function findFavoritesForOwner(User $user): array
+    {
+        /** @var Contact[] $result */
+        $result = $this->createQueryBuilder('c')
+            ->where('c.owner = :owner')
+            ->andWhere('c.is_favorite = :favorite')
+            ->setParameter('owner', $user)
+            ->setParameter('favorite', true)
+            ->getQuery()
+            ->getResult();
+
+        return $result;
     }
 }

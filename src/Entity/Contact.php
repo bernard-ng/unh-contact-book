@@ -95,9 +95,13 @@ class Contact
         return $this->birthday;
     }
 
-    public function setBirthday(?\DateTimeImmutable $birthday): self
+    public function setBirthday(?\DateTimeInterface $birthday): self
     {
-        $this->birthday = $birthday;
+        if ($birthday !== null) {
+            $this->birthday = \DateTimeImmutable::createFromInterface($birthday);
+        } else {
+            $this->birthday = null;
+        }
 
         return $this;
     }
@@ -244,7 +248,7 @@ class Contact
 
     public function addGroup(Group $group): self
     {
-        if (! $this->groups->contains($group)) {
+        if (!$this->groups->contains($group)) {
             $this->groups[] = $group;
             $group->addContact($this);
         }
@@ -271,5 +275,13 @@ class Contact
         $this->is_favorite = $is_favorite;
 
         return $this;
+    }
+
+    public function getFormattedGender(): string
+    {
+        return match (true) {
+            'F' => 'female',
+            default => 'male'
+        };
     }
 }

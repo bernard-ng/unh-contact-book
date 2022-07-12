@@ -1,14 +1,14 @@
 {% extends 'shared/layout/base.html.twig' %}
-{% block title 'Tous les contacts' %}
+{% block title 'Contacts favoris' %}
 
 {% block header %}
     {% embed "shared/component/_header.html.twig" %}
-        {% block header_title  'Tous les contacts' | title %}
+        {% block header_title  'Contacts favoris' | title %}
         {% block header_action_list %}
             <li>
-                <a href="" class="btn btn-white btn-dim btn-outline-light">
-                    {{ 'plus' | icon }}
-                    <span>ajouter un contact</span>
+                <a href="{{ path('app_index') }}" class="btn btn-white btn-dim btn-outline-light">
+                    {{ 'arrow-long-left' | icon }}
+                    <span>Tous les contacts</span>
                 </a>
             </li>
         {% endblock %}
@@ -24,20 +24,15 @@
                 </div>
             {% endfor %}
         </div>
-        <div class="mt-5 d-flex justify-content-center">
-            {% if data is defined %}
-                {{ knp_pagination_render(data) }}
-            {% endif %}
-        </div>
     {% else %}
         <div class="card card-stretch">
             <div class="card-body">
                 <div class="d-flex justify-content-center align-center">
                     <div class="nk-block-content nk-error-ld text-center">
                         <h1 class="nk-error-head">{{ 'alert' | icon }}</h1>
-                        <h3 class="nk-error-title">Vous n'avez aucun contact</h3>
+                        <h3 class="nk-error-title">Vous n'avez aucun contact favoris</h3>
                         <a href="{{ path('app_index') }}" class="btn btn-lg btn-primary mt-2">
-                            Ajouter un contact
+                            Tous vos contacts
                         </a>
                     </div>
                 </div>

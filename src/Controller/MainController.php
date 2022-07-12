@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\User;
+use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -13,8 +16,21 @@ use Symfony\Component\Routing\Annotation\Route;
 final class MainController extends AbstractController
 {
     #[Route('/', name: 'app_index')]
-    public function index(): Response
+    public function index(Request $request, PaginatorInterface $paginator): Response
     {
-        return $this->render('domain/contact/index.html.twig');
+        /** @var User $user */
+        $user = $this->getUser();
+        $data = $paginator->paginate(
+            target: $user->getContacts(),
+            page: $request->query->getInt('page', 1),
+            limit: 20
+        );
+
+        return $this->render(
+            view: 'domain/contact/index.html.twig',
+            parameters: [
+                'data' => $data
+            ]
+        );
     }
 }

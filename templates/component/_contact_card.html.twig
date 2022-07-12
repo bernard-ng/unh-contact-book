@@ -1,0 +1,32 @@
+<div class="card">
+    <div class="card-inner">
+        <div class="team">
+            {% if contact.isFavorite %}
+                <div title="contact favoris" class="team-status bg-warning-dim text-warning">{{ 'star-fill' | icon }}</div>
+            {% endif %}
+            <div class="user-card user-card-s2">
+                <div class="user-avatar lg bg-primary">
+                    <img src="https://fakeface.rest/face/view/{{ contact.id }}?gender={{ contact.formattedGender }}" alt="avatar du contact">
+                </div>
+                <div class="user-info">
+                    <h6>{{ contact.name }}</h6>
+                    {% if contact.jobTitle %}
+                        <span class="sub-text">{{ contact.jobTitle }}</span>
+                    {% endif %}
+                </div>
+            </div>
+            <ul class="team-info">
+                <li><span>Numéro</span><span>{{ contact.phoneNumbers | first }}</span></li>
+                {% if contact.emails | length > 0 %}
+                    <li><span>Email</span><span>{{ contact.emails | first }}</span></li>
+                {% endif %}
+                <li><span>Contact depuis</span><span>{{ contact.createdAt | date }}</span></li>
+            </ul>
+            <div class="team-view">
+                <a href="{{ path('app_contact_show', {id: contact.id}) }}" class="btn btn-block btn-dim btn-primary">
+                    <span>Voir plus</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
