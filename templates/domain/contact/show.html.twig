@@ -1,6 +1,113 @@
 {% extends 'shared/layout/base.html.twig' %}
-{% block title 'Détail du contact' %}
+{% block title "Contact : #{data.surname} #{data.name}" %}
 
-{% block body %}
+{% block header %}
+    {% embed "shared/component/_header.html.twig" %}
+        {% block header_title "Détails du contact" %}
+        {% block header_action_list %}
+            <li class="btn-group">
+                <a href="{{ path('app_index') }}" class="btn btn-white btn-dim btn-outline-light">
+                    {{ 'arrow-long-left' | icon }}
+                    <span>tous les contacts</span>
+                </a>
+                <a href="{{ path('app_contact_edit', {id: data.id}) }}" class="btn btn-white btn-dim btn-outline-light">
+                    {{ 'edit' | icon }}
+                    <span>modifier</span>
+                </a>
+                <form method="post" action="{{ path('app_contact_delete', {id: data.id}) }}" class="d-inline-block"
+                      onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet élément ?');">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <input type="hidden" name="_token" value="{{ csrf_token("delete_#{data.id}") }}">
+                    <button class="btn btn-white btn-dim btn-outline-light btn-delete">
+                        {{ 'delete' | icon }}
+                        <span>supprimer</span>
+                    </button>
+                </form>
+            </li>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
 
+{% block content %}
+    {% embed "shared/component/card/_detail.html.twig" %}
+        {% import 'shared/component/_macros.html.twig' as component %}
+        {% block detail_card_body %}
+            <div class="nk-block">
+                <div class="nk-block-head">
+                    <div class="user-avatar xl mb-2">
+                        <img src="{{ data.defaultAvatar }}" alt="avatar du contact">
+                    </div>
+                    <h5 class="title">{{ data.surname }} {{ data.name }}</h5>
+                    <p>{{ data.note }}</p>
+                </div>
+                <div class="profile-ud-list">
+                    {{ component.user_data_item('Favoris', data.isFavorite | boolean) }}
+                    <div class="profile-ud-item">
+                        <div class="profile-ud wider">
+                            <span class="profile-ud-label">Numéros de téléphone</span>
+                            <div class="profile-ud-value">
+                                <ul>
+                                    {% for number in data.phoneNumbers %}
+                                        <li>{{ number }}</li>
+                                    {% else %}
+                                        <li>-</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="profile-ud-item">
+                        <div class="profile-ud wider">
+                            <span class="profile-ud-label">Adresses email</span>
+                            <div class="profile-ud-value">
+                                <ul>
+                                    {% for email in data.emails %}
+                                        <li>{{ email }}</li>
+                                    {% else %}
+                                        <li>-</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{ component.user_data_item('Genre', data.gender) }}
+                    {{ component.user_data_item('Anniversaire', data.birthday | date) }}
+
+                    <div class="profile-ud-item">
+                        <div class="profile-ud wider">
+                            <span class="profile-ud-label">Site internet</span>
+                            <div class="profile-ud-value">
+                                {% if data.website %}
+                                    <a href="{{ data.website }}">{{ data.website }}</a>
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    {{ component.user_data_item('Poste au travail', data.jobTitle) }}
+                    {{ component.user_data_item('Département au travail', data.department) }}
+                    {{ component.user_data_item('Organisation', data.organization) }}
+
+                    <div class="profile-ud-item">
+                        <div class="profile-ud wider">
+                            <span class="profile-ud-label">Lien réseaux sociaux</span>
+                            <div class="profile-ud-value">
+                                <ul>
+                                    {% for link in data.socialNetworks %}
+                                        <li><a href="{{ link }}">{{ link }}</a></li>
+                                    {% else %}
+                                        <li>-</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endblock %}
+    {% endembed %}
 {% endblock %}

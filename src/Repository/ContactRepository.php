@@ -50,6 +50,7 @@ class ContactRepository extends ServiceEntityRepository
         $result = $this->createQueryBuilder('c')
             ->where('c.owner = :owner')
             ->andWhere('c.is_favorite = :favorite')
+            ->orderBy('c.created_at', 'DESC')
             ->setParameter('owner', $user)
             ->setParameter('favorite', true)
             ->getQuery()

@@ -9,7 +9,7 @@
                     <img src="{{ contact.defaultAvatar }}" alt="avatar du contact">
                 </div>
                 <div class="user-info">
-                    <h6>{{ contact.name }}</h6>
+                    <h6>{{ contact.surname }} {{ contact.name }}</h6>
                     {% if contact.jobTitle %}
                         <span class="sub-text">{{ contact.jobTitle }}</span>
                     {% endif %}

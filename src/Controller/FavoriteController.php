@@ -40,10 +40,7 @@ final class FavoriteController extends AbstractController
     #[Route('/favorites/update', name: 'app_favorite_update', methods: ['GET', 'POST'])]
     public function update(Request $request, ContactRepository $repository): Response
     {
-        /** @var User $user */
-        $user = $this->getUser();
-        $favorites = $repository->findFavoritesForOwner($user);
-        $data = new FavoriteUpdateData($favorites);
+        $data = new FavoriteUpdateData();
         $form = $this->createForm(FavoriteUpdateType::class, $data)
             ->handleRequest($request);
 

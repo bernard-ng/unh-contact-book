@@ -39,6 +39,7 @@ class GroupType extends AbstractType
                 'query_builder' => function (ContactRepository $repository) use ($user) {
                     return $repository->createQueryBuilder('c')
                         ->where('c.owner = :owner')
+                        ->orderBy('c.created_at', 'DESC')
                         ->setParameter('owner', $user);
                 },
             ])

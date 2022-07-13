@@ -315,6 +315,9 @@
             "config/routes/ux_autocomplete.yaml"
         ]
     },
+    "symfony/ux-cropperjs": {
+        "version": "v2.3.0"
+    },
     "symfony/ux-dropzone": {
         "version": "v2.3.0"
     },

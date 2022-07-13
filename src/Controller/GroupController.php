@@ -29,7 +29,7 @@ class GroupController extends AbstractController
             limit: 20
         );
 
-        return $this->render('group/index.html.twig', [
+        return $this->render('domain/group/index.html.twig', [
             'data' => $data
         ]);
     }
@@ -52,7 +52,7 @@ class GroupController extends AbstractController
         }
 
         return $this->renderForm(
-            view: 'group/new.html.twig',
+            view: 'domain/group/new.html.twig',
             parameters: [
                 'group' => $group,
                 'form' => $form,
@@ -63,14 +63,9 @@ class GroupController extends AbstractController
     #[Route('/{id}', name: 'app_group_show', methods: ['GET'])]
     public function show(Group $group): Response
     {
-        /** @var User $user */
-        $user = $this->getUser();
+        $this->denyAccessUnlessGranted('GROUP_MUTATION', $group);
 
-        if ($group->getOwner() !== $user) {
-            throw $this->createAccessDeniedException();
-        }
-
-        return $this->render('group/show.html.twig', [
+        return $this->render('domain/group/show.html.twig', [
             'data' => $group,
         ]);
     }
@@ -78,13 +73,7 @@ class GroupController extends AbstractController
     #[Route('/{id}/edit', name: 'app_group_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Group $group, GroupRepository $repository): Response
     {
-        /** @var User $user */
-        $user = $this->getUser();
-
-        if ($group->getOwner() !== $user) {
-            throw $this->createAccessDeniedException();
-        }
-
+        $this->denyAccessUnlessGranted('GROUP_MUTATION', $group);
         $form = $this->createForm(GroupType::class, $group);
         $form->handleRequest($request);
 
@@ -95,7 +84,7 @@ class GroupController extends AbstractController
             return $this->redirectToRoute('app_group_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('group/edit.html.twig', [
+        return $this->renderForm('domain/group/edit.html.twig', [
             'data' => $group,
             'form' => $form,
         ]);
@@ -104,12 +93,7 @@ class GroupController extends AbstractController
     #[Route('/{id}', name: 'app_group_delete', methods: ['DELETE'])]
     public function delete(Request $request, Group $group, GroupRepository $repository): Response
     {
-        /** @var User $user */
-        $user = $this->getUser();
-
-        if ($group->getOwner() !== $user) {
-            throw $this->createAccessDeniedException();
-        }
+        $this->denyAccessUnlessGranted('GROUP_MUTATION', $group);
 
         if ($this->isCsrfTokenValid('delete_' . $group->getId(), $request->request->get('_token'))) {
             $repository->remove($group, true);

@@ -33,9 +33,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Contact::class, orphanRemoval: true)]
+    #[ORM\OrderBy(['created_at' => 'DESC'])]
     private Collection $contacts;
 
     #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Group::class, orphanRemoval: true)]
+    #[ORM\OrderBy(['created_at' => 'DESC'])]
     private Collection $groups;
 
     public function __construct()
