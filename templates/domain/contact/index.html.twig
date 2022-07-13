@@ -1,14 +1,18 @@
 {% extends 'shared/layout/base.html.twig' %}
-{% block title 'Tous les contacts' %}
+{% block title 'Mes contacts' %}
 
 {% block header %}
     {% embed "shared/component/_header.html.twig" %}
-        {% block header_title  'Tous les contacts' | title %}
+        {% block header_title  'Mes contacts' %}
         {% block header_action_list %}
-            <li>
+            <li class="btn-group">
                 <a href="" class="btn btn-white btn-dim btn-outline-light">
                     {{ 'plus' | icon }}
                     <span>ajouter un contact</span>
+                </a>
+                <a href="" class="btn btn-white btn-dim btn-outline-light">
+                    {{ 'file' | icon }}
+                    <span>exporter</span>
                 </a>
             </li>
         {% endblock %}
@@ -34,9 +38,9 @@
             <div class="card-body">
                 <div class="d-flex justify-content-center align-center">
                     <div class="nk-block-content nk-error-ld text-center">
-                        <h1 class="nk-error-head">{{ 'alert' | icon }}</h1>
-                        <h3 class="nk-error-title">Vous n'avez aucun contact</h3>
-                        <a href="{{ path('app_index') }}" class="btn btn-lg btn-primary mt-2">
+                        <img src="{{ asset('images/contact.svg') }}" alt="aucune données" width="200">
+                        <p class="nk-error-description">Vous n'avez aucun contact</p>
+                        <a href="{{ path('app_contact_new') }}" class="btn btn-primary">
                             Ajouter un contact
                         </a>
                     </div>

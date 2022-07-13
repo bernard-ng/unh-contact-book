@@ -30,7 +30,7 @@ class Group
     #[ORM\JoinColumn(nullable: false)]
     private ?User $owner = null;
 
-    #[ORM\ManyToMany(targetEntity: Contact::class, inversedBy: 'groups')]
+    #[ORM\ManyToMany(targetEntity: Contact::class, inversedBy: 'groups', fetch: 'EAGER')]
     private Collection $contacts;
 
     public function __construct()

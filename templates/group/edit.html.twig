@@ -1,13 +1,32 @@
-{% extends 'base.html.twig' %}
+{% extends 'shared/layout/base.html.twig' %}
+{% block title "Modifier un groupe" | title %}
 
-{% block title %}Edit Group{% endblock %}
+{% block header %}
+    {% embed "shared/component/_header.html.twig" %}
+        {% block header_title "Modifier un groupe" %}
+        {% block header_action_list %}
+            <li class="btn-group">
+                <a href="{{ path('app_group_index') }}" class="btn btn-white btn-dim btn-outline-light">
+                    {{ 'arrow-long-left' | icon }}
+                    <span>tous les groups</span>
+                </a>
+                <form method="post" action="{{ path('app_group_delete', {id: data.id}) }}" class="d-inline-block">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <input type="hidden" name="_token" value="{{ csrf_token("delete_#{data.id}") }}">
+                    <button class="btn btn-white btn-dim btn-outline-light btn-delete">
+                        {{ 'delete' | icon }}
+                        <span>supprimer</span>
+                    </button>
+                </form>
+            </li>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
 
-{% block body %}
-    <h1>Edit Group</h1>
-
-    {{ include('group/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('app_group_index') }}">back to list</a>
-
-    {{ include('group/_delete_form.html.twig') }}
+{% block content %}
+    {% embed "shared/component/card/_simple.html.twig" %}
+        {% block simple_card_body %}
+            {% include 'shared/component/_form.html.twig' %}
+        {% endblock %}
+    {% endembed %}
 {% endblock %}

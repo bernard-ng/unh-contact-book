@@ -1,11 +1,16 @@
-{% extends 'base.html.twig' %}
+{% extends 'shared/layout/base.html.twig' %}
+{% block title "Ajouter un groupe" | title %}
 
-{% block title %}New Group{% endblock %}
+{% block header %}
+    {% embed "shared/component/_header.html.twig" %}
+        {% block header_title "Ajouter un groupe" %}
+    {% endembed %}
+{% endblock %}
 
-{% block body %}
-    <h1>Create new Group</h1>
-
-    {{ include('group/_form.html.twig') }}
-
-    <a href="{{ path('app_group_index') }}">back to list</a>
+{% block content %}
+    {% embed "shared/component/card/_simple.html.twig" %}
+        {% block simple_card_body %}
+            {% include 'shared/component/_form.html.twig' %}
+        {% endblock %}
+    {% endembed %}
 {% endblock %}

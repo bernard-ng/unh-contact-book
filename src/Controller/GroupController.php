@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[IsGranted('IS_AUTHENTICATED_FULLY')]
 class GroupController extends AbstractController
 {
-    #[Route('/', name: 'app_group_index', methods: ['GET'])]
+    #[Route('', name: 'app_group_index', methods: ['GET'])]
     public function index(Request $request, PaginatorInterface $paginator): Response
     {
         /** @var User $user */
@@ -37,13 +37,17 @@ class GroupController extends AbstractController
     #[Route('/new', name: 'app_group_new', methods: ['GET', 'POST'])]
     public function new(Request $request, GroupRepository $repository): Response
     {
+        /** @var User $owner */
+        $owner = $this->getUser();
         $group = new Group();
         $form = $this->createForm(GroupType::class, $group);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $group->setOwner($owner);
             $repository->add($group, true);
 
+            $this->addFlash('success', 'le groupe a été créé avec succès');
             return $this->redirectToRoute('app_group_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -67,7 +71,7 @@ class GroupController extends AbstractController
         }
 
         return $this->render('group/show.html.twig', [
-            'group' => $group,
+            'data' => $group,
         ]);
     }
 
@@ -87,16 +91,17 @@ class GroupController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $repository->add($group, true);
 
+            $this->addFlash('success', 'le groupe a été modifié avec succès');
             return $this->redirectToRoute('app_group_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('group/edit.html.twig', [
-            'group' => $group,
+            'data' => $group,
             'form' => $form,
         ]);
     }
 
-    #[Route('/{id}', name: 'app_group_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'app_group_delete', methods: ['DELETE'])]
     public function delete(Request $request, Group $group, GroupRepository $repository): Response
     {
         /** @var User $user */
@@ -106,10 +111,11 @@ class GroupController extends AbstractController
             throw $this->createAccessDeniedException();
         }
 
-        if ($this->isCsrfTokenValid('delete' . $group->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete_' . $group->getId(), $request->request->get('_token'))) {
             $repository->remove($group, true);
         }
 
+        $this->addFlash('success', 'le groupe a été supprimé avec succès');
         return $this->redirectToRoute('app_group_index', [], Response::HTTP_SEE_OTHER);
     }
 }

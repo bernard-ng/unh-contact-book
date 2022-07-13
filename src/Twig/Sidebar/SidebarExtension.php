@@ -163,8 +163,8 @@ class SidebarExtension extends AbstractExtension
         $label = $this->translator->trans($item->getLabel(), domain: $translation_domain);
         $badge = $this->translator->trans($item->getBadge(), domain: $translation_domain);
         $url = $this->router->generate($item->getRoute(), $item->getParams());
-        $active = $item->getRoute() === $this->route ? 'active current-page' : '';
-        $current = $item->getRoute() === $this->route ? 'aria-current="page"' : '';
+        $active = $this->activeClass($url, activeClass: 'active current-page', relative: true);
+        $current = $this->activeClass($item->getRoute(), activeClass: 'aria-current="page"');
         $icon = ! empty($item->getIcon()) ?
             "<span class='nk-menu-icon'><em class='icon ni ni-{$item->getIcon()}'></em></span>" : '';
 

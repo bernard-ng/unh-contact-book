@@ -40,6 +40,7 @@
         "symfony/translation": "6.1.*",
         "symfony/twig-bundle": "6.1.*",
         "symfony/uid": "6.1.*",
+        "symfony/ux-autocomplete": "^2.3",
         "symfony/ux-dropzone": "^2.3",
         "symfony/ux-turbo": "^2.3",
         "symfony/validator": "6.1.*",
@@ -47,6 +48,7 @@
         "symfony/webpack-encore-bundle": "^1.15",
         "symfony/yaml": "6.1.*",
         "twig/extra-bundle": "^2.12|^3.0",
+        "twig/string-extra": "^3.4",
         "twig/twig": "^2.12|^3.0",
         "vich/uploader-bundle": "^1.19"
     },

@@ -1,41 +1,47 @@
-{% extends 'base.html.twig' %}
+{% extends 'shared/layout/base.html.twig' %}
+{% block title 'Mes groupes' %}
 
-{% block title %}Group index{% endblock %}
+{% block header %}
+    {% embed 'shared/component/_header.html.twig' %}
+        {% block header_title 'Mes groupes' %}
+        {% block header_action_list %}
+            <li>
+                <a href="{{ path('app_group_new') }}" class="btn btn-white btn-dim btn-outline-light">
+                    {{ 'plus' | icon }}
+                    <span>ajouter un groupe</span>
+                </a>
+            </li>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
 
-{% block body %}
-    <h1>Group index</h1>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Created_at</th>
-                <th>Updated_at</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for group in groups %}
-            <tr>
-                <td>{{ group.id }}</td>
-                <td>{{ group.name }}</td>
-                <td>{{ group.description }}</td>
-                <td>{{ group.createdAt ? group.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ group.updatedAt ? group.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('app_group_show', {'id': group.id}) }}">show</a>
-                    <a href="{{ path('app_group_edit', {'id': group.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_group_new') }}">Create new</a>
+{% block content %}
+    {% if data | length > 0 %}
+        <div class="row g-gs">
+            {% for group in data %}
+                <div class="col-sm-6 col-lg-4 col-xxl-3">
+                    {% include 'component/_group_card.html.twig' with {group: group} %}
+                </div>
+            {% endfor %}
+        </div>
+        <div class="mt-5 d-flex justify-content-center">
+            {% if data is defined %}
+                {{ knp_pagination_render(data) }}
+            {% endif %}
+        </div>
+    {% else %}
+        <div class="card card-stretch">
+            <div class="card-body">
+                <div class="d-flex justify-content-center align-center">
+                    <div class="nk-block-content nk-error-ld text-center">
+                        <img src="{{ asset('images/contact.svg') }}" alt="aucune données" width="200">
+                        <p class="nk-error-description">Vous n'avez aucun group</p>
+                        <a href="{{ path('app_group_new') }}" class="btn btn-primary">
+                            Ajouter un groupe
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}

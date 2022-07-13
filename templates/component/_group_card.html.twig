@@ -1,27 +1,33 @@
 <div class="card h-100">
     <div class="card-inner">
         <div class="project">
-            <div class="project-head"><a href="/demo2/apps-kanban.html" class="project-title">
+            <div class="project-head">
+                <a href="{{ path('app_group_show', {id: group.id}) }}" class="project-title">
                     <div class="project-info">
-                        <h6 class="title">Dashlite Development</h6>
-                        <span class="sub-text">Softnio</span>
+                        <h6 class="title">{{ group.name }}</h6>
                     </div>
                 </a>
             </div>
-            <div class="project-details"><p></p></div>
-            <div class="project-meta">
-                <ul class="project-users g-1">
-                    <li>
-                        <div class="user-avatar sm bg-primary"><span>A</span></div>
-                    </li>
-                    <li>
-                        <div class="user-avatar sm bg-blue"><img src="/demo2/images/avatar/b-sm.jpg" alt=""></div>
-                    </li>
-                    <li>
-                        <div class="user-avatar bg-light sm"><span>+12</span></div>
-                    </li>
-                </ul>
-            </div>
+            <div class="project-details"><p>{{ group.description | u.truncate(150, '...') }}</p></div>
+            {% if group.contacts | length > 0 %}
+                <div class="project-meta">
+                    <div class="user-avatar-group">
+                        {% for contact in group.contacts.slice(0, 3) %}
+                            <div class="user-avatar sm bg-purple">
+                                <a href="{{ path('app_contact_show', {id: contact.id}) }}" title="{{ contact.name }}">
+                                    <img src="{{ contact.defaultAvatar }}" alt="avatar du contact" />
+                                </a>
+                            </div>
+                        {% endfor %}
+                        {% if group.contacts.count - 3 > 0 %}
+                            <div class="user-avatar bg-light sm"><span>+{{ group.contacts.count - 3 }}</span></div>
+                        {% endif %}
+                    </div>
+                    <a href="{{ path('app_group_show', {id: group.id}) }}" class="btn btn-dim btn-primary">
+                        <span>Voir plus</span>
+                    </a>
+                </div>
+            {% endif %}
         </div>
     </div>
 </div>

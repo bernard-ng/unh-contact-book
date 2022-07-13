@@ -1,0 +1,24 @@
+{% extends 'shared/layout/base.html.twig' %}
+{% block title "Ajouter aux favoris" | title %}
+
+{% block header %}
+    {% embed "shared/component/_header.html.twig" %}
+        {% block header_title "Ajouter aux favoris" %}
+        {% block header_action_list %}
+            <li class="btn-group">
+                <a href="{{ path('app_favorite_index') }}" class="btn btn-white btn-dim btn-outline-light">
+                    {{ 'arrow-long-left' | icon }}
+                    <span>contacts favoris</span>
+                </a>
+            </li>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
+
+{% block content %}
+    {% embed "shared/component/card/_simple.html.twig" %}
+        {% block simple_card_body %}
+            {% include 'shared/component/_form.html.twig' %}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

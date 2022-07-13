@@ -7,6 +7,8 @@ namespace App\Repository;
 use App\Entity\Contact;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -42,7 +44,7 @@ class ContactRepository extends ServiceEntityRepository
         }
     }
 
-    public function findFavoritesForOwner(User $user): array
+    public function findFavoritesForOwner(User $user): Collection
     {
         /** @var Contact[] $result */
         $result = $this->createQueryBuilder('c')
@@ -53,6 +55,6 @@ class ContactRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
 
-        return $result;
+        return new ArrayCollection($result);
     }
 }

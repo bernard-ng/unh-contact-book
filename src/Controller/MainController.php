@@ -15,7 +15,13 @@ use Symfony\Component\Routing\Annotation\Route;
 #[IsGranted('IS_AUTHENTICATED_FULLY')]
 final class MainController extends AbstractController
 {
-    #[Route('/', name: 'app_index')]
+    #[Route('/')]
+    public function entry(): Response
+    {
+        return $this->redirectToRoute('app_index');
+    }
+
+    #[Route('/contacts', name: 'app_index')]
     public function index(Request $request, PaginatorInterface $paginator): Response
     {
         /** @var User $user */
