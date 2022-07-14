@@ -13,9 +13,13 @@
                 <div class="project-meta">
                     <div class="user-avatar-group">
                         {% for contact in group.contacts.slice(0, 3) %}
-                            <div class="user-avatar sm bg-purple">
-                                <a href="{{ path('app_contact_show', {id: contact.id}) }}" title="{{ contact.name }}">
-                                    <img src="{{ contact.defaultAvatar }}" alt="avatar du contact" />
+                            <div class="user-avatar sm bg-primary">
+                                <a href="{{ path('app_contact_show', {id: contact.id}) }}" title="{{ contact.fullName }} ">
+                                    {% if contact.avatarUrl %}
+                                        <img src="{{ contact.defaultAvatar }}" alt="avatar du contact" />
+                                    {% else %}
+                                        <span class="text-white">{{ contact.defaultInitials }}</span>
+                                    {% endif %}
                                 </a>
                             </div>
                         {% endfor %}

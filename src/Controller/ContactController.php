@@ -14,9 +14,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[IsGranted('IS_AUTHENTICATED_FULLY')]
+#[Route('/contacts', name: 'app_contact_')]
 final class ContactController extends AbstractController
 {
-    #[Route('/contacts/new', name: 'app_contact_new', methods: ['GET', 'POST'])]
+    #[Route('/new', name: 'new', methods: ['GET', 'POST'])]
     public function new(Request $request, ContactRepository $repository): Response
     {
         /** @var User $user */
@@ -41,7 +42,7 @@ final class ContactController extends AbstractController
         );
     }
 
-    #[Route('/contacts/{id}', name: 'app_contact_show', methods: ['GET'])]
+    #[Route('/{id}', name: 'show', methods: ['GET'])]
     public function show(Contact $contact): Response
     {
         $this->denyAccessUnlessGranted('CONTACT_MUTATION', $contact);
@@ -54,7 +55,7 @@ final class ContactController extends AbstractController
         );
     }
 
-    #[Route('/{id}/edit', name: 'app_contact_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Contact $contact, ContactRepository $repository): Response
     {
         $this->denyAccessUnlessGranted('CONTACT_MUTATION', $contact);
@@ -80,7 +81,7 @@ final class ContactController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_contact_delete', methods: ['DELETE'])]
+    #[Route('/{id}', name: 'delete', methods: ['DELETE'])]
     public function delete(Request $request, Contact $contact, ContactRepository $repository): Response
     {
         $this->denyAccessUnlessGranted('CONTACT_MUTATION', $contact);

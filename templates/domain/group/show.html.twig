@@ -47,11 +47,15 @@
                             <a href="{{ path('app_contact_show', {id: contact.id}) }}">
                                 <div class="user-card">
                                     <div class="user-avatar bg-primary">
-                                        <img src="{{ contact.defaultAvatar }}" alt="avatar contact">
+                                        {% if contact.avatarUrl %}
+                                            <img src="{{ contact.defaultAvatar }}" alt="avatar contact">
+                                        {% else %}
+                                            <span>{{ contact.defaultInitials }}</span>
+                                        {% endif %}
                                     </div>
                                     <div class="user-info">
-                                        <span class="tb-lead">{{ contact.name }}</span>
-                                        <span>{{ contact.surname }}</span>
+                                        <span class="tb-lead">{{ contact.surname }}</span>
+                                        <span>{{ contact.name }}</span>
                                     </div>
                                 </div>
                             </a>

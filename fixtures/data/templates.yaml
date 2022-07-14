@@ -22,6 +22,7 @@ App\Entity\Contact:
     updated_at: ~
     social_networks: []
     is_favorite: 0
+    avatar_url: https://fakeface.rest/face/view/<current()>?gender=<randomElement(['male', 'female'])>
 
 App\Entity\Group:
   group (template):

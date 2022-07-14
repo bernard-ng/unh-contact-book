@@ -8,7 +8,11 @@ use App\Repository\ContactRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
+#[Vich\Uploadable]
 #[ORM\Entity(repositoryClass: ContactRepository::class)]
 class Contact
 {
@@ -66,6 +70,15 @@ class Contact
         'default' => false,
     ])]
     private bool $is_favorite = false;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $avatar_url = null;
+
+    #[Vich\UploadableField(
+        mapping: 'avatar',
+        fileNameProperty: 'avatar_url'
+    )]
+    private ?File $avatar_file = null;
 
     public function __construct()
     {
@@ -287,6 +300,46 @@ class Contact
 
     public function getDefaultAvatar(): string
     {
-        return "https://fakeface.rest/face/view/{$this->id}?gender={$this->getFormattedGender()}";
+        if (str_contains((string)$this->avatar_url, 'fakeface.rest/face/view')) {
+            return $this->avatar_url;
+        }
+
+        return "/uploads/avatar/{$this->avatar_url}";
+    }
+
+    public function getFullName(): string
+    {
+        return sprintf("%s %s", $this->surname, $this->name);
+    }
+
+    public function getDefaultInitials(): string
+    {
+        return sprintf('%s%s', $this->surname[0] ?? '', $this->name[0] ?? '');
+    }
+
+    public function getAvatarUrl(): ?string
+    {
+        return $this->avatar_url;
+    }
+
+    public function setAvatarUrl(?string $avatar_url): self
+    {
+        $this->avatar_url = $avatar_url;
+
+        return $this;
+    }
+
+    public function getAvatarFile(): ?File
+    {
+        return $this->avatar_file;
+    }
+
+    public function setAvatarFile(?File $avatar_file): self
+    {
+        $this->avatar_file = $avatar_file;
+        if ($avatar_file instanceof UploadedFile) {
+            $this->updated_at = new \DateTimeImmutable();
+        }
+        return $this;
     }
 }

@@ -28,7 +28,7 @@ class FavoriteUpdateType extends AbstractType
             ->add('contacts', EntityType::class, [
                 'attr' => ['is' => 'app-select-choices'],
                 'placeholder' => 'Choisissez un contact',
-                'choice_label' => 'name',
+                'choice_label' => 'full_name',
                 'class' => Contact::class,
                 'required' => false,
                 'label' => 'Contacts',

@@ -18,12 +18,14 @@ use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Security;
+use Symfony\UX\Dropzone\Form\DropzoneType;
 
 class ContactType extends AbstractType
 {
     public function __construct(
         private readonly Security $security
-    ) {
+    )
+    {
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -32,8 +34,15 @@ class ContactType extends AbstractType
         $user = $this->security->getUser();
 
         $builder
-            ->add('name', TextType::class, ['label' => 'Nom'])
             ->add('surname', TextType::class, ['label' => 'Prénom'])
+            ->add('name', TextType::class, ['label' => 'Nom'])
+            ->add('avatar_file', DropzoneType::class, [
+                'label' => 'Photo de profile',
+                'required' => false,
+                'attr' => [
+                    'placeholder' => 'Glisser et déposer ou parcourir'
+                ]
+            ])
             ->add('is_favorite', CheckboxType::class, [
                 'label' => 'Contact favoris ?',
                 'required' => false
@@ -114,6 +123,7 @@ class ContactType extends AbstractType
                 'placeholder' => 'Choisissez un groupe',
                 'choice_label' => 'name',
                 'class' => Group::class,
+                'required' => false,
                 'label' => 'Groupes',
                 'multiple' => true,
                 'query_builder' => function (GroupRepository $repository) use ($user) {
@@ -125,8 +135,8 @@ class ContactType extends AbstractType
             ]);
 
         $transformer = new CallbackTransformer(
-            transform: fn (array $data) => implode(',', $data),
-            reverseTransform: fn (string $data) => explode(',', $data)
+            transform: fn(array $data) => implode(',', $data),
+            reverseTransform: fn($data) => explode(',', $data ?? '')
         );
 
         $builder->get('emails')->addModelTransformer($transformer);

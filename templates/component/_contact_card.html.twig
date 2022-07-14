@@ -6,10 +6,14 @@
             {% endif %}
             <div class="user-card user-card-s2">
                 <div class="user-avatar lg bg-primary">
-                    <img src="{{ contact.defaultAvatar }}" alt="avatar du contact">
+                    {% if contact.avatarUrl %}
+                        <img src="{{ contact.defaultAvatar }}" alt="avatar du contact">
+                    {% else %}
+                        <span>{{ contact.defaultInitials }}</span>
+                    {% endif %}
                 </div>
                 <div class="user-info">
-                    <h6>{{ contact.surname }} {{ contact.name }}</h6>
+                    <h6>{{ contact.fullName }}</h6>
                     {% if contact.jobTitle %}
                         <span class="sub-text">{{ contact.jobTitle }}</span>
                     {% endif %}

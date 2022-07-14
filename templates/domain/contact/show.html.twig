@@ -35,7 +35,13 @@
             <div class="nk-block">
                 <div class="nk-block-head">
                     <div class="user-avatar xl mb-2">
-                        <img src="{{ data.defaultAvatar }}" alt="avatar du contact">
+                        {% if data.avatarUrl %}
+                            <a href="{{ path('app_cropper', {id: data.id}) }}" title="redimensionner la photo de profile">
+                                <img src="{{ data.defaultAvatar }}" alt="avatar du contact">
+                            </a>
+                        {% else %}
+                            <span>{{ data.defaultInitials }}</span>
+                        {% endif %}
                     </div>
                     <h5 class="title">{{ data.surname }} {{ data.name }}</h5>
                     <p>{{ data.note }}</p>
