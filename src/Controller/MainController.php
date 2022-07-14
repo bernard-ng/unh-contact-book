@@ -35,7 +35,7 @@ final class MainController extends AbstractController
         return $this->render(
             view: 'domain/contact/index.html.twig',
             parameters: [
-                'data' => $data
+                'data' => $data,
             ]
         );
     }

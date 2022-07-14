@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Security\Voter;
 
 use App\Entity\Group;
@@ -12,25 +14,20 @@ class GroupeVoter extends Voter
 {
     public const MUTATION = 'GROUP_MUTATION';
 
-    protected function supports(string $attribute, $subject): bool
+    protected function supports(string $attribute, mixed $subject): bool
     {
-        return $attribute == self::MUTATION && $subject instanceof Group;
+        return $attribute === self::MUTATION && $subject instanceof Group;
     }
 
-    /**
-     * @param string $attribute
-     * @param Group $subject
-     * @param TokenInterface $token
-     * @return bool
-     */
-    protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
+    protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
         /** @var User $user */
         $user = $token->getUser();
-        if (!$user instanceof UserInterface) {
+        if (! $user instanceof UserInterface) {
             return false;
         }
 
+        /** @var Group $subject */
         return $subject->getOwner() === $user;
     }
 }

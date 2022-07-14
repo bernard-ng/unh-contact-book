@@ -30,8 +30,11 @@ class Group
     #[ORM\JoinColumn(nullable: false)]
     private ?User $owner = null;
 
+    /** @var Collection<Contact> */
     #[ORM\ManyToMany(targetEntity: Contact::class, inversedBy: 'groups', fetch: 'EAGER')]
-    #[ORM\OrderBy(['created_at' => 'DESC'])]
+    #[ORM\OrderBy([
+        'created_at' => 'DESC',
+    ])]
     private Collection $contacts;
 
     public function __construct()

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form;
 
 use App\Entity\Contact;
@@ -27,10 +29,16 @@ class GroupType extends AbstractType
         $user = $this->security->getUser();
 
         $builder
-            ->add('name', TextType::class, ['label' => 'Nom'])
-            ->add('description', TextareaType::class, ['label' => 'Description'])
+            ->add('name', TextType::class, [
+                'label' => 'Nom',
+            ])
+            ->add('description', TextareaType::class, [
+                'label' => 'Description',
+            ])
             ->add('contacts', EntityType::class, [
-                'attr' => ['is' => 'app-select-choices'],
+                'attr' => [
+                    'is' => 'app-select-choices',
+                ],
                 'placeholder' => 'Choisissez un contact',
                 'choice_label' => 'full_name',
                 'class' => Contact::class,

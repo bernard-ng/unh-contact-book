@@ -17,11 +17,13 @@ final class CropController extends AbstractController
     #[Route('contacts/{id}/_crop', name: 'app_cropper')]
     public function index(Contact $contact, UploaderHelper $uploaderHelper, CropperInterface $cropper, Request $request): Response
     {
-        $filename = sprintf("%s/public%s", $this->getParameter('kernel.project_dir'), $contact->getDefaultAvatar());
+        $filename = sprintf('%s/public%s', strval($this->getParameter('kernel.project_dir')), $contact->getDefaultAvatar());
         $crop = $cropper->createCrop($filename);
         $crop->setCroppedMaxSize(1000, 700);
 
-        $form = $this->createFormBuilder(['crop' => $crop])
+        $form = $this->createFormBuilder([
+            'crop' => $crop,
+        ])
             ->add('crop', CropperType::class, [
                 'public_url' => $uploaderHelper->asset($contact, 'avatar_file'),
                 'cropper_options' => [
@@ -37,7 +39,9 @@ final class CropController extends AbstractController
 
             return $this->redirectSeeOther(
                 route: 'app_contact_show',
-                params: ['id' => $contact->getId()]
+                params: [
+                    'id' => $contact->getId(),
+                ]
             );
         }
 
@@ -45,7 +49,7 @@ final class CropController extends AbstractController
             view: 'domain/contact/crop.html.twig',
             parameters: [
                 'form' => $form,
-                'data' => $contact
+                'data' => $contact,
             ]
         );
     }

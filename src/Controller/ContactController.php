@@ -37,7 +37,7 @@ final class ContactController extends AbstractController
         return $this->renderForm(
             view: 'domain/contact/new.html.twig',
             parameters: [
-                'form' => $form
+                'form' => $form,
             ]
         );
     }
@@ -50,7 +50,7 @@ final class ContactController extends AbstractController
         return $this->render(
             view: 'domain/contact/show.html.twig',
             parameters: [
-                'data' => $contact
+                'data' => $contact,
             ]
         );
     }
@@ -69,7 +69,7 @@ final class ContactController extends AbstractController
             return $this->redirectToRoute(
                 route: 'app_contact_show',
                 parameters: [
-                    'id' => $contact->getId()
+                    'id' => $contact->getId(),
                 ],
                 status: Response::HTTP_SEE_OTHER
             );
@@ -86,7 +86,7 @@ final class ContactController extends AbstractController
     {
         $this->denyAccessUnlessGranted('CONTACT_MUTATION', $contact);
 
-        if ($this->isCsrfTokenValid('delete_' . $contact->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete_' . $contact->getId(), (string) $request->request->get('_token'))) {
             $repository->remove($contact, true);
         }
 

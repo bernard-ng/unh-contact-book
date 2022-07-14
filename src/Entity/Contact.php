@@ -54,15 +54,16 @@ class Contact
     private array $phone_numbers = [];
 
     #[ORM\Column(type: 'array', nullable: true)]
-    private array $emails = [];
+    private ?array $emails = [];
 
     #[ORM\Column(type: 'array', nullable: true)]
-    private array $social_networks = [];
+    private ?array $social_networks = [];
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'contacts')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $owner = null;
 
+    /** @var Collection<Group> */
     #[ORM\ManyToMany(targetEntity: Group::class, mappedBy: 'contacts')]
     private Collection $groups;
 
@@ -203,7 +204,7 @@ class Contact
         return $this;
     }
 
-    public function getPhoneNumbers(): ?array
+    public function getPhoneNumbers(): array
     {
         return $this->phone_numbers;
     }
@@ -261,7 +262,7 @@ class Contact
 
     public function addGroup(Group $group): self
     {
-        if (!$this->groups->contains($group)) {
+        if (! $this->groups->contains($group)) {
             $this->groups[] = $group;
             $group->addContact($this);
         }
@@ -293,14 +294,14 @@ class Contact
     public function getFormattedGender(): string
     {
         return match (true) {
-            'F' => 'female',
+            $this->gender === 'F' => 'female',
             default => 'male'
         };
     }
 
-    public function getDefaultAvatar(): string
+    public function getDefaultAvatar(): ?string
     {
-        if (str_contains((string)$this->avatar_url, 'fakeface.rest/face/view')) {
+        if (str_contains((string) $this->avatar_url, 'fakeface.rest/face/view')) {
             return $this->avatar_url;
         }
 
@@ -309,7 +310,7 @@ class Contact
 
     public function getFullName(): string
     {
-        return sprintf("%s %s", $this->surname, $this->name);
+        return sprintf('%s %s', $this->surname, $this->name);
     }
 
     public function getDefaultInitials(): string

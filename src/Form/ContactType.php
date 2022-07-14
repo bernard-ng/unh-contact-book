@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form;
 
 use App\Entity\Contact;
@@ -24,8 +26,7 @@ class ContactType extends AbstractType
 {
     public function __construct(
         private readonly Security $security
-    )
-    {
+    ) {
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -34,18 +35,22 @@ class ContactType extends AbstractType
         $user = $this->security->getUser();
 
         $builder
-            ->add('surname', TextType::class, ['label' => 'Prénom'])
-            ->add('name', TextType::class, ['label' => 'Nom'])
+            ->add('surname', TextType::class, [
+                'label' => 'Prénom',
+            ])
+            ->add('name', TextType::class, [
+                'label' => 'Nom',
+            ])
             ->add('avatar_file', DropzoneType::class, [
                 'label' => 'Photo de profile',
                 'required' => false,
                 'attr' => [
-                    'placeholder' => 'Glisser et déposer ou parcourir'
-                ]
+                    'placeholder' => 'Glisser et déposer ou parcourir',
+                ],
             ])
             ->add('is_favorite', CheckboxType::class, [
                 'label' => 'Contact favoris ?',
-                'required' => false
+                'required' => false,
             ])
             ->add('phone_numbers', TextType::class, [
                 'label' => 'Numéros de téléphone',
@@ -54,7 +59,7 @@ class ContactType extends AbstractType
                     'create' => true,
                     'createOnBlur' => true,
                     'delimiter' => ',',
-                ]
+                ],
             ])
             ->add('emails', TextType::class, [
                 'label' => 'Adresses email',
@@ -64,16 +69,18 @@ class ContactType extends AbstractType
                     'createOnBlur' => true,
                     'delimiter' => ',',
                 ],
-                'required' => false
+                'required' => false,
             ])
             ->add('gender', ChoiceType::class, [
                 'label' => 'Genre',
                 'choices' => [
                     'Masculin' => 'M',
                     'Féminin' => 'F',
-                    'Non Binaire' => 'O'
+                    'Non Binaire' => 'O',
                 ],
-                'attr' => ['is' => 'app-select-choices'],
+                'attr' => [
+                    'is' => 'app-select-choices',
+                ],
             ])
             ->add('birthday', DateTimeType::class, [
                 'attr' => [
@@ -82,23 +89,23 @@ class ContactType extends AbstractType
                 'input_format' => 'Y-m-d H:i',
                 'html5' => false,
                 'widget' => 'single_text',
-                'required' => false
+                'required' => false,
             ])
             ->add('website', UrlType::class, [
                 'label' => 'Site internet',
-                'required' => false
+                'required' => false,
             ])
             ->add('job_title', TextType::class, [
                 'label' => 'Poste au travail',
-                'required' => false
+                'required' => false,
             ])
             ->add('department', TextType::class, [
                 'label' => 'Département au travail',
-                'required' => false
+                'required' => false,
             ])
             ->add('organization', TextType::class, [
                 'label' => 'Organisation',
-                'required' => false
+                'required' => false,
             ])
             ->add('note', TextareaType::class, [
                 'label' => 'Note',
@@ -116,10 +123,12 @@ class ContactType extends AbstractType
                     'create' => true,
                     'createOnBlur' => true,
                     'delimiter' => ',',
-                ]
+                ],
             ])
             ->add('groups', EntityType::class, [
-                'attr' => ['is' => 'app-select-choices'],
+                'attr' => [
+                    'is' => 'app-select-choices',
+                ],
                 'placeholder' => 'Choisissez un groupe',
                 'choice_label' => 'name',
                 'class' => Group::class,
@@ -135,8 +144,8 @@ class ContactType extends AbstractType
             ]);
 
         $transformer = new CallbackTransformer(
-            transform: fn(array $data) => implode(',', $data),
-            reverseTransform: fn($data) => explode(',', $data ?? '')
+            transform: fn (array $data) => implode(',', $data),
+            reverseTransform: fn ($data) => explode(',', $data ?? '')
         );
 
         $builder->get('emails')->addModelTransformer($transformer);

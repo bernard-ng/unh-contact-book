@@ -30,7 +30,7 @@ class GroupController extends AbstractController
         );
 
         return $this->render('domain/group/index.html.twig', [
-            'data' => $data
+            'data' => $data,
         ]);
     }
 
@@ -95,7 +95,7 @@ class GroupController extends AbstractController
     {
         $this->denyAccessUnlessGranted('GROUP_MUTATION', $group);
 
-        if ($this->isCsrfTokenValid('delete_' . $group->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete_' . $group->getId(), (string) $request->request->get('_token'))) {
             $repository->remove($group, true);
         }
 

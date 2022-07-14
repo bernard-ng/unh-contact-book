@@ -32,7 +32,7 @@ final class FavoriteController extends AbstractController
         return $this->render(
             view: 'domain/contact/favorite.html.twig',
             parameters: [
-                'data' => $data
+                'data' => $data,
             ]
         );
     }
@@ -45,7 +45,8 @@ final class FavoriteController extends AbstractController
             ->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $data->contacts->map(function (Contact $contact) use ($repository) {
+            $data->contacts->map(function ($contact) use ($repository) {
+                /** @var Contact $contact */
                 $contact->setIsFavorite(true);
                 $repository->add($contact, true);
             });
@@ -57,7 +58,7 @@ final class FavoriteController extends AbstractController
         return $this->renderForm(
             view: 'domain/contact/favorite_update.html.twig',
             parameters: [
-                'form' => $form
+                'form' => $form,
             ]
         );
     }

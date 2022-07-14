@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Security\Voter;
 
 use App\Entity\Contact;
@@ -12,25 +14,20 @@ class ContactVoter extends Voter
 {
     public const MUTATION = 'CONTACT_MUTATION';
 
-    protected function supports(string $attribute, $subject): bool
+    protected function supports(string $attribute, mixed $subject): bool
     {
-        return $attribute == self::MUTATION && $subject instanceof Contact;
+        return $attribute === self::MUTATION && $subject instanceof Contact;
     }
 
-    /**
-     * @param string $attribute
-     * @param Contact $subject
-     * @param TokenInterface $token
-     * @return bool
-     */
-    protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
+    protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
         /** @var User $user */
         $user = $token->getUser();
-        if (!$user instanceof UserInterface) {
+        if (! $user instanceof UserInterface) {
             return false;
         }
 
+        /** @var Contact $subject */
         return $subject->getOwner() === $user;
     }
 }

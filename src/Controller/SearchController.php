@@ -12,6 +12,6 @@ final class SearchController extends AbstractController
     #[Route('/recherche')]
     public function index(): Response
     {
-        return new Response("");
+        return new Response('');
     }
 }

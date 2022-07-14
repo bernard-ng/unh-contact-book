@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form;
 
 use App\DataTransfert\FavoriteUpdateData;
@@ -26,7 +28,9 @@ class FavoriteUpdateType extends AbstractType
 
         $builder
             ->add('contacts', EntityType::class, [
-                'attr' => ['is' => 'app-select-choices'],
+                'attr' => [
+                    'is' => 'app-select-choices',
+                ],
                 'placeholder' => 'Choisissez un contact',
                 'choice_label' => 'full_name',
                 'class' => Contact::class,
@@ -46,7 +50,7 @@ class FavoriteUpdateType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => FavoriteUpdateData::class
+            'data_class' => FavoriteUpdateData::class,
         ]);
     }
 }
