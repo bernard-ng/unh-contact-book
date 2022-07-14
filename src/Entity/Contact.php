@@ -216,6 +216,20 @@ class Contact
         return $this;
     }
 
+    public function addPhoneNumber(string $number): self
+    {
+        $this->phone_numbers[] = $number;
+
+        return $this;
+    }
+
+    public function addEmail(string $email): self
+    {
+        $this->emails[] = $email;
+
+        return $this;
+    }
+
     public function getEmails(): ?array
     {
         return $this->emails;

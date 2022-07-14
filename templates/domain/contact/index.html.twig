@@ -10,9 +10,13 @@
                     {{ 'plus' | icon }}
                     <span>ajouter un contact</span>
                 </a>
-                <a href="" class="btn btn-white btn-dim btn-outline-light">
-                    {{ 'file' | icon }}
+                <a href="{{ path('app_contact_export') }}" class="btn btn-white btn-dim btn-outline-light">
+                    {{ 'download-cloud' | icon }}
                     <span>exporter</span>
+                </a>
+                <a href="{{ path('app_contact_import') }}" class="btn btn-white btn-dim btn-outline-light">
+                    {{ 'upload' | icon }}
+                    <span>importer</span>
                 </a>
             </li>
         {% endblock %}

@@ -4,11 +4,17 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\DataTransfert\ImportContactData;
 use App\Entity\Contact;
 use App\Entity\User;
 use App\Form\ContactType;
+use App\Form\ImportContactType;
 use App\Repository\ContactRepository;
+use Sabre\VObject\Component\VCard;
+use Sabre\VObject\Node;
+use Sabre\VObject\Splitter\VCard as SplitterVCard;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -92,5 +98,104 @@ final class ContactController extends AbstractController
 
         $this->addFlash('success', 'le contact a été supprimé avec succès');
         return $this->redirectToRoute('app_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/export', name: 'export', methods: ['GET'], priority: 10)]
+    public function export(): Response
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+        $vcard = new VCard();
+
+        /** @var Contact $contact */
+        foreach ($user->getContacts() as $contact) {
+            $vcard->add(new VCard([
+                'FN' => sprintf('%s %s', $contact->getSurname(), $contact->getName()),
+                'TEL' => implode(',', $contact->getPhoneNumbers()),
+                'EMAIL' => implode(',', $contact->getEmails()),
+                'NOTE' => $contact->getNote(),
+                'ORG' => $contact->getOrganization(),
+                'GENDER' => $contact->getGender(),
+                'TITLE' => $contact->getJobTitle(),
+                'BDAY' => $contact->getBirthday() ? $contact->getBirthday()->format('Ymd') : '',
+                'N' => [$contact->getSurname(), $contact->getName()],
+                'NICKNAME' => $contact->getSurname(),
+                'PHOTO' => sprintf('data:image/jpeg;base64,[%s]', $this->getBase64Avatar($contact)),
+            ]));
+        }
+
+        $response = new Response($vcard->serialize());
+        $response->headers->set('Content-Disposition', HeaderUtils::makeDisposition(
+            disposition: HeaderUtils::DISPOSITION_ATTACHMENT,
+            filename: 'contacts.vcf'
+        ));
+
+        return $response;
+    }
+
+    #[Route('/import', name: 'import', methods: ['GET', 'POST'], priority: 10)]
+    public function import(Request $request, ContactRepository $repository): Response
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+        $data = new ImportContactData();
+        $form = $this->createForm(ImportContactType::class, $data)
+            ->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $file = fopen((string) $data->file?->getRealPath(), 'r');
+
+            if ($file) {
+                $splitter = new SplitterVCard($file);
+
+                while ($vcard = $splitter->getNext()) {
+                    $contact = (new Contact())
+                        ->setOwner($user)
+                        ->setName($vcard->FN ?? '')
+                        ->setSurname($vcard->NIKCNAME ?? null)
+                        ->setOrganization($vcard->ORG ?? '');
+
+                    if (isset($vcard->TEL) && $vcard->TEL instanceof Node) {
+                        array_map(
+                            fn ($tel) => $contact->addPhoneNumber(strval($tel)),
+                            $vcard->TEL->getIterator()->getArrayCopy()
+                        );
+                    }
+
+                    if (isset($vcard->EMAIL) && $vcard->EMAIL instanceof Node) {
+                        array_map(
+                            fn ($email) => $contact->addEmail(strval($email)),
+                            $vcard->EMAIL->getIterator()->getArrayCopy()
+                        );
+                    }
+
+                    $repository->add($contact, true);
+                }
+
+                $this->addFlash('success', 'les contacts ont bien été importés');
+            } else {
+                $this->addSomethingWentWrongFlash();
+            }
+
+            return $this->redirectSeeOther('app_index');
+        }
+
+        return $this->renderForm(
+            view: 'domain/contact/import.html.twig',
+            parameters: [
+                'form' => $form,
+            ]
+        );
+    }
+
+    private function getBase64Avatar(Contact $contact): string
+    {
+        $root = sprintf('%s/public', strvaL($this->getParameter('kernel.project_dir')));
+
+        if ($contact->getAvatarUrl() && ! str_contains((string) $contact->getAvatarUrl(), 'fakeface.rest/face/view')) {
+            return base64_encode(sprintf('%s%s', $root, $contact->getAvatarUrl()));
+        }
+
+        return base64_encode(sprintf('%s', $contact->getAvatarUrl()));
     }
 }
