@@ -53,6 +53,10 @@ migrate: vendor/autoload.php ## create database and migrate to the latest versio
 	$(php) bin/console doctrine:database:create --if-not-exists
 	$(php) bin/console doctrine:migration:migrate --no-interaction --allow-no-migration
 
+.PHONY: seed
+seed: vendor/autoload.php ## dump database with fake data for testing
+	$(php) bin/console doctrine:fixture:load
+
 .PHONY: test
 test: vendor/autoload.php ## unit and integration tests
 	$(phptest) bin/console cache:clear --env=test
@@ -71,6 +75,7 @@ dev: vendor/autoload.php node_modules/time ## Start the development env
 
 .PHONY: install
 install: vendor/autoload.php public/assets/manifest.json ## install and setup
+	make build-docker
 	make clear
 	make migrate
 

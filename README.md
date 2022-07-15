@@ -19,6 +19,25 @@ L'objectif est de permettre à l'utilisateur de retrouver ses contacts le plus r
 - Bukasa Kamwanga Patrick (UI/UX Design)
 - Tshabu Ngandu Bernard (Backend)
 
+
+## Lancer l'application (environnement de dev)
+L'application utilise un ensemble de technologie pour fonctionner, afin d'éviter les problèmes de compatibilité que l'on peut avoir sur différent environnement, nous avons utilisé **Docker**
+
+```bash
+# Téléchargement des sources
+git clone https://github.com/bernard-ng/contact-book-php contacts
+cd contacts
+
+# installation et mise en place
+make install
+
+# création de données de test
+make seed
+
+# lancer l'application (localhost:8000)
+make dev
+```
+
 ## Screenshots
 
 ![login](.github/screenshots/contact-book-4.png)
