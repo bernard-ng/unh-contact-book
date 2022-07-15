@@ -58,4 +58,19 @@ class ContactRepository extends ServiceEntityRepository
 
         return new ArrayCollection($result);
     }
+
+    public function search(User $user, string $query): array
+    {
+        /** @var Contact[] $result */
+        $result = $this->createQueryBuilder('c')
+            ->where('c.name LIKE :query')
+            ->orWhere('c.surname LIKE :query')
+            ->andWhere('c.owner = :owner')
+            ->setParameter('query', "%${query}%")
+            ->setParameter('owner', $user)
+            ->getQuery()
+            ->getResult();
+
+        return $result;
+    }
 }

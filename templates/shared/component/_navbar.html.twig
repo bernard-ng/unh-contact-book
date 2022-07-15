@@ -12,6 +12,12 @@
                     <img class="logo-dark logo-img" src="{{ asset('images/logo_icon.png') }}" alt="logo-dark">
                 </a>
             </div>
+            <div class="nk-header-search ms-3 ms-xl-0">
+                {{ 'search' | icon }}
+                <form action="{{ path('app_contact_search') }}" method="get">
+                    <input aria-label="recherche" name="q" type="search" class="form-control border-transparent form-focus-none" placeholder="rechercher...">
+                </form>
+            </div>
             {% block navbar_content %}{% endblock %}
             <div class="nk-header-tools">
                 <ul class="nk-quick-nav">

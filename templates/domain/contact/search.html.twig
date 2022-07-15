@@ -1,0 +1,52 @@
+{% extends 'shared/layout/base.html.twig' %}
+{% block title 'Résultat de recherche' %}
+
+{% block header %}
+    {% embed "shared/component/_header.html.twig" %}
+        {% block header_title  'Résultat de recherche' %}
+        {% block header_action_list %}
+            <li class="btn-group">
+                <a href="{{ path('app_contact_new') }}" class="btn btn-white btn-dim btn-outline-light">
+                    {{ 'plus' | icon }}
+                    <span>ajouter un contact</span>
+                </a>
+                <a href="{{ path('app_contact_export') }}" class="btn btn-white btn-dim btn-outline-light">
+                    {{ 'download-cloud' | icon }}
+                    <span>exporter</span>
+                </a>
+                <a href="{{ path('app_contact_import') }}" class="btn btn-white btn-dim btn-outline-light">
+                    {{ 'upload' | icon }}
+                    <span>importer</span>
+                </a>
+            </li>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
+
+{% block content %}
+    {% if data | length > 0 %}
+        <div class="row g-gs">
+            {% for contact in data %}
+                <div class="col-sm-6 col-lg-4 col-xxl-3">
+                    {% include 'component/_contact_card.html.twig' with {contact: contact} %}
+                </div>
+            {% endfor %}
+        </div>
+        <div class="mt-5 d-flex justify-content-center">
+            {% if data is defined %}
+                {{ knp_pagination_render(data) }}
+            {% endif %}
+        </div>
+    {% else %}
+        <div class="card card-stretch">
+            <div class="card-body">
+                <div class="d-flex justify-content-center align-center">
+                    <div class="nk-block-content nk-error-ld text-center">
+                        <img src="{{ asset('images/contact.svg') }}" alt="aucune données" width="200">
+                        <p class="nk-error-description">Aucun contact ne correspond à votre recherche</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

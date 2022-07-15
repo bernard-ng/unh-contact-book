@@ -10,6 +10,7 @@ use App\Entity\User;
 use App\Form\ContactType;
 use App\Form\ImportContactType;
 use App\Repository\ContactRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Sabre\VObject\Component\VCard;
 use Sabre\VObject\Node;
 use Sabre\VObject\Splitter\VCard as SplitterVCard;
@@ -186,6 +187,30 @@ final class ContactController extends AbstractController
                 'form' => $form,
             ]
         );
+    }
+
+    #[Route('/search', name: 'search', methods: ['GET'], priority: 10)]
+    public function search(Request $request, ContactRepository $repository, PaginatorInterface $paginator): Response
+    {
+        $query = $request->query->getAlnum('q', '');
+        if (! empty($query)) {
+            /** @var User $user */
+            $user = $this->getUser();
+            return $this->render(
+                view: 'domain/contact/search.html.twig',
+                parameters: [
+                    'query' => $query,
+                    'data' => $paginator->paginate(
+                        target: $repository->search($user, $query),
+                        page: $request->query->getInt('p', 1),
+                        limit: 20
+                    ),
+                ]
+            );
+        }
+
+        $this->addSomethingWentWrongFlash();
+        return $this->redirectSeeOther('app_index');
     }
 
     private function getBase64Avatar(Contact $contact): string
