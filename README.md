@@ -13,6 +13,12 @@ C’est pourquoi notre carnet d’adresse de notre projet annuel sauvegarde les 
 
 L'objectif est de permettre à l'utilisateur de retrouver ses contacts le plus rapidement possible, avoir accès à ses contacts peu importe l’heure et où il se trouve, sécuriser toutes ses informations personnelles avec une authentification
 
+## Documents et Présentations
+- Cahier de charge : https://docs.google.com/document/d/13I3zARPKc7lq_JhtLTLgiCzo9m_6c-b4wagRWDfPKGU/edit?usp=sharing
+- Cahier de réalisation : https://docs.google.com/document/d/13I3zARPKc7lq_JhtLTLgiCzo9m_6c-b4wagRWDfPKGU/edit?usp=sharing
+- Description du projet : https://docs.google.com/document/d/1qPvZ-vouCTssRA9vdOByDlf3KPsBYyb_Zr0LERQw8Vs/edit?usp=sharing
+- Slide de présentation : https://docs.google.com/presentation/d/1Z7QVIu-lRjqEXxOzH1Slpo_pKHCiHxlEJcsjfz2X574/edit?usp=sharing
+
 ## Attributions des rôles
 
 - Kahindo Mutsunga Charline (Algorithmique)
